@@ -1,0 +1,11 @@
+
+.presentation-page .form-wrapper{
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ position: relative;
+}
+
+.presentation-page .form{
+ width:60%;
+}

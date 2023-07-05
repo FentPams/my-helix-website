@@ -8,12 +8,15 @@ import {
   decorateSections,
   decorateBlocks,
   decorateTemplateAndTheme,
+  getMetadata,
+  toClassName,
   waitForLCP,
   loadBlocks,
   loadCSS,
 } from './lib-franklin.js';
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
+let templateModule;
 
 /**
  * Builds hero block and prepends to main in a new section.
@@ -27,6 +30,44 @@ function buildHeroBlock(main) {
     const section = document.createElement('div');
     section.append(buildBlock('hero', { elems: [picture, h1] }));
     main.prepend(section);
+  }
+}
+
+/**
+ * Builds template block and adds to main as sections.
+ * @param {Element} main The container element.
+ * @returns {Promise} Resolves when the template block(s) have
+ *  been loaded.
+ */
+async function decorateTemplate(main) {
+  const template = toClassName(getMetadata('template'));
+  if (!template || template === 'generic') {
+    return;
+  }
+
+  try {
+    const cssLoaded = loadCSS(`${window.hlx.codeBasePath}/templates/${template}/${template}.css`);
+    const decorationComplete = new Promise((resolve) => {
+      (async () => {
+        try {
+          templateModule = await import(`../templates/${template}/${template}.js`);
+          if (templateModule?.loadEager) {
+            await templateModule.loadEager(main);
+          }
+        } catch (error) {
+          if (error.message === '404') {
+            await render404();
+          }
+          // eslint-disable-next-line no-console
+          console.log(`failed to load template for ${template}`, error);
+        }
+        resolve();
+      })();
+    });
+    await Promise.all([cssLoaded, decorationComplete]);
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log(`failed to load template ${template}`, error);
   }
 }
 
@@ -66,7 +107,8 @@ async function loadEager(doc) {
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
   if (main) {
-    decorateMain(main);
+    await decorateTemplate(main);
+    await decorateMain(main);
     document.body.classList.add('appear');
     await waitForLCP(LCP_BLOCKS);
   }
@@ -95,6 +137,9 @@ export function addFavIcon(href) {
  */
 async function loadLazy(doc) {
   const main = doc.querySelector('main');
+  if (templateModule?.loadLazy) {
+    templateModule.loadLazy(main);
+  }
   await loadBlocks(main);
 
   const { hash } = window.location;
@@ -115,10 +160,16 @@ async function loadLazy(doc) {
  * Loads everything that happens a lot later,
  * without impacting the user experience.
  */
-function loadDelayed() {
+function loadDelayed(doc) {
   // eslint-disable-next-line import/no-cycle
-  window.setTimeout(() => import('./delayed.js'), 3000);
   // load anything that can be postponed to the latest here
+  window.setTimeout(() => {
+    if (templateModule?.loadDelayed) {
+      templateModule.loadDelayed(doc);
+    }
+    // eslint-disable-next-line import/no-cycle
+    return import('./delayed.js');
+  }, 3000);
 }
 
 async function loadPage() {
