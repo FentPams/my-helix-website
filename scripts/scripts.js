@@ -72,6 +72,32 @@ async function decorateTemplate(main) {
 }
 
 /**
+ * Clean up variant classes
+ * Ex: marquee--small--contained- -> marquee small contained
+ * @param {HTMLElement} parent
+ */
+export function cleanVariations(parent) {
+  const variantBlocks = parent.querySelectorAll('[class$="-"]');
+  return Array.from(variantBlocks).map((variant) => {
+    const { className } = variant;
+    const classNameClipped = className.slice(0, -1);
+    variant.classList.remove(className);
+    const classNames = classNameClipped.split('--');
+    variant.classList.add(...classNames);
+    return variant;
+  });
+}
+
+export function loadScript(url, callback, type) {
+  const script = document.createElement('script');
+  script.onload = callback;
+  script.setAttribute('src', url);
+  if (type) { script.setAttribute('type', type); }
+  document.head.append(script);
+  return script;
+}
+
+/**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
@@ -97,6 +123,7 @@ export function decorateMain(main) {
   decorateSections(main);
   decorateBlocks(main);
 }
+
 
 /**
  * Loads everything needed to get to LCP.
