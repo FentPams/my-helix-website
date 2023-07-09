@@ -91,4 +91,21 @@ export default function init(el) {
       }
     }
   });
+
+  el.querySelectorAll('.z-row-even, .z-row-odd').forEach((row) => {
+    const pictures = row.querySelectorAll('picture');
+    for (let i = 0; i < ColorPattern.length; i++) {
+      const tag = row.querySelector(`.colored-tag.${ColorPattern[i]}`);
+      if (tag) {
+        tag.addEventListener('mouseover', () => {
+          pictures[0].style.display = 'none';
+          pictures[i + 1].style.display = 'inline'; 
+        });
+        tag.addEventListener('mouseout', () => {
+          pictures[0].style.display = 'inline';
+          pictures[i + 1].style.display = 'none'; 
+        });
+      }
+    }
+  }); 
 }

@@ -1,0 +1,24 @@
+.animated-text h2{
+ font-size: var(--type-heading-xxxl-size);
+ line-height: var(--type-heading-xxxl-lh);
+ text-align:center;
+}
+.in-view.text-main-reveal {
+ animation: main-reveal 1s forwards var(--cubic-bezier-1);
+}
+
+@keyframes main-reveal {
+0%, 10% {
+ opacity: 0;
+ transform: scale(1.5) translateZ(0);
+}
+
+40% {
+ opacity: 1;
+}
+
+100% {
+ opacity: 1;
+ transform: scale(1) translateZ(0);
+}
+}

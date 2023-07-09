@@ -22,6 +22,11 @@
   margin: 0;
 }
 
+.z-pattern .colored-tag:hover{
+  box-shadow: 2px 2px 5px #494747;
+ }
+ 
+
 .z-pattern-redesign h3 {
   grid-column: 1 / 3;
   font-size: var(--type-heading-l-lh);
@@ -207,6 +212,16 @@
 
 .z-pattern .colored-tag-description {
   text-align: center;
+}
+
+.z-pattern picture:not(.slide-reveal-up-slow) {
+  position: inherit;
+  display: none;
+}
+
+
+.z-pattern img{
+  margin: 0 auto;
 }
 
 @media (min-width: 600px) {
