@@ -64,4 +64,22 @@ export default function decorate(block) {
   if (block.classList.contains('inview-animation')) {
     addInViewAnimationToMultipleElements(animationConfig.items, block, animationConfig.staggerTime);
   }
+
+
+  if (block.classList.contains('block-intro')) {
+    const defaultContent = block.parentElement.previousElementSibling;
+    
+    const pictures = defaultContent.querySelectorAll('picture');
+    pictures[1].classList.add('hidden');
+    
+    pictures[0].addEventListener('click', () => {
+      pictures[0].classList.add('hidden');
+      pictures[1].classList.remove('hidden');
+    });
+
+    pictures[1].addEventListener('click', () => {
+      pictures[1].classList.add('hidden');
+      pictures[0].classList.remove('hidden');
+    });
+  }
 }

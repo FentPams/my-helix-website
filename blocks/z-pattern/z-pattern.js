@@ -105,14 +105,14 @@ export default function init(el) {
           window.requestAnimationFrame(() => {
             pictures[0].classList.add('hidden');
             pictures[i + 1].classList.remove('hidden'); 
-            setTimeout(() => {}, 1000);
+            setTimeout(() => {}, 3000);
           });
         });
         tag.addEventListener('mouseout', () => {
           window.requestAnimationFrame(() => {
             pictures[0].classList.remove('hidden');
             pictures[i + 1].classList.add('hidden');
-            setTimeout(() => {}, 1000);
+            setTimeout(() => {}, 3000);
           });
         });
     });
