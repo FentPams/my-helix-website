@@ -214,10 +214,10 @@
   text-align: center;
 }
 
-.z-pattern picture:not(.slide-reveal-up-slow) {
+/* .z-pattern picture:not(.slide-reveal-up-slow) {
   position: inherit;
   display: none;
-}
+} */
 
 
 .z-pattern img{
