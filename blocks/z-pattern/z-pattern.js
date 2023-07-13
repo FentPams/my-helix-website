@@ -94,27 +94,80 @@ export default function init(el) {
 
   el.querySelectorAll('.z-row-even, .z-row-odd').forEach((row) => {
     const pictures = row.querySelectorAll('picture');
-    //const parentDiv = pictures[0].parentElement;
-    for(let i = 1; i < pictures.length; i++) {
-      //parentDiv.append(pictures[i]);
+    const parentDiv = pictures[0].parentElement;
+    for (let i = 1; i < pictures.length; i++) {
+      parentDiv.append(pictures[i]);
       pictures[i].classList.add('hidden');
     }
 
-    row.querySelectorAll('.colored-tag').forEach((tag, i) => {
-        tag.addEventListener('mouseover', () => {
-          window.requestAnimationFrame(async () => {
-            pictures[0].classList.add('hidden');
-            pictures[i + 1].classList.remove('hidden'); 
-            await new Promise((resolve) => setTimeout(resolve, 200));
+    // Create an array to store the promises for each picture
+    const pictureLoadPromises = [];
+
+    // Create an Intersection Observer
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        // Check if the picture is fully in view
+        if (entry.isIntersecting) {
+          const pictureElement = entry.target;
+
+          // Create a promise for each picture
+          const pictureLoadPromise = new Promise((resolve, reject) => {
+            const imageElement = pictureElement.querySelector('img');
+
+            const handleLoad = () => {
+              imageElement.removeEventListener('load', handleLoad);
+              resolve();
+            };
+
+            const handleError = () => {
+              imageElement.removeEventListener('error', handleError);
+              reject(new Error('Failed to load picture.'));
+            };
+
+            imageElement.addEventListener('load', handleLoad);
+            imageElement.addEventListener('error', handleError);
           });
-        });
-        tag.addEventListener('mouseout', () => {
-          window.requestAnimationFrame(async () => {
-            pictures[0].classList.remove('hidden');
-            pictures[i + 1].classList.add('hidden');
-            await new Promise((resolve) => setTimeout(resolve, 200));
-          });
-        });
+
+          pictureLoadPromises.push(pictureLoadPromise);
+
+          // Stop observing the picture once it's loaded
+          observer.unobserve(pictureElement);
+        }
+      });
     });
-  }); 
+
+    // Observe each picture element
+    pictures.forEach((pictureElement) => {
+      observer.observe(pictureElement);
+    });
+
+    // Wait for all pictures to load
+    Promise.all(pictureLoadPromises)
+      .then(() => {
+        console.log('All pictures have loaded successfully.');
+        // Perform further actions here
+        row.querySelectorAll('.colored-tag').forEach((tag, i) => {
+          tag.addEventListener('mouseover', () => {
+            setTimeout(() => {
+              window.requestAnimationFrame(() => {
+                pictures[0].classList.add('hidden');
+                pictures[i + 1].classList.remove('hidden');
+              });
+            }, 200);
+          });
+          tag.addEventListener('mouseout', () => {
+            setTimeout(() => {
+              window.requestAnimationFrame(() => {
+                pictures[0].classList.remove('hidden');
+                pictures[i + 1].classList.add('hidden');
+              });
+            }, 200);
+          });
+        });
+      })
+      .catch((error) => {
+        console.error('Error loading pictures:', error);
+      });
+
+  });
 }
