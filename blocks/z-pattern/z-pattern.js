@@ -102,17 +102,17 @@ export default function init(el) {
 
     row.querySelectorAll('.colored-tag').forEach((tag, i) => {
         tag.addEventListener('mouseover', () => {
-          window.requestAnimationFrame(() => {
+          window.requestAnimationFrame(async () => {
             pictures[0].classList.add('hidden');
             pictures[i + 1].classList.remove('hidden'); 
-            setTimeout(() => {}, 3000);
+            await new Promise((resolve) => setTimeout(resolve, 200));
           });
         });
         tag.addEventListener('mouseout', () => {
-          window.requestAnimationFrame(() => {
+          window.requestAnimationFrame(async () => {
             pictures[0].classList.remove('hidden');
             pictures[i + 1].classList.add('hidden');
-            setTimeout(() => {}, 3000);
+            await new Promise((resolve) => setTimeout(resolve, 200));
           });
         });
     });
