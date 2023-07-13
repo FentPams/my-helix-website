@@ -148,18 +148,22 @@ export default function init(el) {
         // Perform further actions here
         row.querySelectorAll('.colored-tag').forEach((tag, i) => {
           tag.addEventListener('mouseover', () => {
+            setTimeout(() => {
               window.requestAnimationFrame(async () => {
-                await new Promise((resolve) => setTimeout(resolve, 200));
                 pictures[0].classList.add('hidden');
                 pictures[i + 1].classList.remove('hidden');
+                await new Promise((resolve) => setTimeout(resolve, 200));
               });
+            }, 200);
           });
           tag.addEventListener('mouseout', () => {
+            setTimeout(() => {
               window.requestAnimationFrame(async () => {
-                await new Promise((resolve) => setTimeout(resolve, 200));
                 pictures[0].classList.remove('hidden');
                 pictures[i + 1].classList.add('hidden');
+                await new Promise((resolve) => setTimeout(resolve, 200));
               });
+            }, 200);
           });
         });
       })
