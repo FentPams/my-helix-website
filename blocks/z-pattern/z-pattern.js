@@ -94,25 +94,23 @@ export default function init(el) {
 
   el.querySelectorAll('.z-row-even, .z-row-odd').forEach((row) => {
     const pictures = row.querySelectorAll('picture');
-    //const parentDiv = pictures[0].parentElement;
     for(let i = 1; i < pictures.length; i++) {
-      //parentDiv.append(pictures[i]);
       pictures[i].classList.add('hidden');
     }
+    const images = [...pictures].map((picture) => picture.querySelector('img'));
+    images.forEach((image) => image.removeAttribute('loading'));
 
     row.querySelectorAll('.colored-tag').forEach((tag, i) => {
         tag.addEventListener('mouseover', () => {
           window.requestAnimationFrame(() => {
             pictures[0].classList.add('hidden');
             pictures[i + 1].classList.remove('hidden'); 
-            setTimeout(() => {}, 3000);
           });
         });
         tag.addEventListener('mouseout', () => {
           window.requestAnimationFrame(() => {
             pictures[0].classList.remove('hidden');
             pictures[i + 1].classList.add('hidden');
-            setTimeout(() => {}, 3000);
           });
         });
     });
