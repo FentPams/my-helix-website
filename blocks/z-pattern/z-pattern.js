@@ -94,9 +94,7 @@ export default function init(el) {
 
   el.querySelectorAll('.z-row-even, .z-row-odd').forEach((row) => {
     const pictures = row.querySelectorAll('picture');
-    //const parentDiv = pictures[0].parentElement;
     for(let i = 1; i < pictures.length; i++) {
-      //parentDiv.append(pictures[i]);
       pictures[i].classList.add('hidden');
     }
     const images = [...pictures].map((picture) => picture.querySelector('img'));
