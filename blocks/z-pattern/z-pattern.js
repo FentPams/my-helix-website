@@ -99,20 +99,20 @@ export default function init(el) {
       //parentDiv.append(pictures[i]);
       pictures[i].classList.add('hidden');
     }
+    const images = [...pictures].map((picture) => picture.querySelector('img'));
+    images.forEach((image) => image.removeAttribute('loading'));
 
     row.querySelectorAll('.colored-tag').forEach((tag, i) => {
         tag.addEventListener('mouseover', () => {
           window.requestAnimationFrame(() => {
             pictures[0].classList.add('hidden');
             pictures[i + 1].classList.remove('hidden'); 
-            setTimeout(() => {}, 3000);
           });
         });
         tag.addEventListener('mouseout', () => {
           window.requestAnimationFrame(() => {
             pictures[0].classList.remove('hidden');
             pictures[i + 1].classList.add('hidden');
-            setTimeout(() => {}, 3000);
           });
         });
     });
