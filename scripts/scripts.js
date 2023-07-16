@@ -1,11 +1,13 @@
 import {
   sampleRUM,
   buildBlock,
+  loadBlock,
   loadHeader,
   loadFooter,
   decorateButtons,
   decorateIcons,
   decorateSections,
+  decorateBlock,
   decorateBlocks,
   decorateTemplateAndTheme,
   getMetadata,
@@ -31,6 +33,11 @@ function buildHeroBlock(main) {
     section.append(buildBlock('hero', { elems: [picture, h1] }));
     main.prepend(section);
   }
+}
+
+function buildHeader() {
+  const header = document.querySelector('header');
+  header.append(buildBlock('header', ''));
 }
 
 /**
@@ -126,6 +133,7 @@ export function loadScript(url, callback, type) {
  */
 function buildAutoBlocks(main) {
   try {
+    buildHeader();
     buildHeroBlock(main);
   } catch (error) {
     // eslint-disable-next-line no-console
@@ -187,6 +195,8 @@ export function addFavIcon(href) {
  */
 async function loadLazy(doc) {
   const main = doc.querySelector('main');
+  const header = doc.querySelector('header > div');
+  document.body.classList.add('redesign');
   if (templateModule?.loadLazy) {
     templateModule.loadLazy(main);
   }
@@ -196,11 +206,15 @@ async function loadLazy(doc) {
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
   if (hash && element) element.scrollIntoView();
 
-  loadHeader(doc.querySelector('header'));
+  //loadHeader(doc.querySelector('header'));
   loadFooter(doc.querySelector('footer'));
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.png`);
+
+  decorateBlock(header);
+  loadBlock(header);
+
   sampleRUM('lazy');
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));

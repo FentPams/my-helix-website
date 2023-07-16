@@ -150,6 +150,7 @@ class Gnav {
 
   decorateHeaderMainNav = () => {
     const mainNavWrapper = this.body.querySelector('div:nth-child(2)');
+    console.log(mainNavWrapper);
     const mainNavLinkWrappers = mainNavWrapper.querySelectorAll('h2');
 
     if (mainNavLinkWrappers.length === 0) {
@@ -299,6 +300,7 @@ class Gnav {
   // right side cta button
   decorateCTAButton = () => {
     const ctaButton = this.body.querySelector('.adobe-cta a');
+    console.log('ctabutton', ctaButton);
     ctaButton.classList.add('gnav-cta-button', 'button');
     ctaButton.setAttribute('aria-label', ctaButton.textContent);
     const ctaText = ctaButton.textContent;
@@ -513,7 +515,7 @@ export default async function init(blockEl) {
   // OLD CODE: const url = getMetadata('gnav') || '/gnav';
   const url = '/nav';
   const html = await fetchGnav(url);
-
+  console.log('html', html);
   if (html) {
     try {
       const parser = new DOMParser();
@@ -522,6 +524,7 @@ export default async function init(blockEl) {
       const gnav = new Gnav(doc.body, blockEl);
       gnav.initHeader();
     } catch (e) {
+      console.log(e);
       const { debug } = await import('../../utils/console.js');
       if (debug) {
         debug('Could not great global navigation', e);
