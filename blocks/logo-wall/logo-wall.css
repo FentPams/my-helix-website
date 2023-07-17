@@ -1,4 +1,5 @@
 .logo-wall {
+    max-width: 70%;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -6,6 +7,7 @@
     align-items: center;
     padding: var(--spacing-xl) 0;
 }
+
 
 .logo-wall .logo-wall-title {
     max-width: 75vw;
@@ -19,9 +21,13 @@
     justify-content: center;
     column-gap: var(--spacing-s);
     row-gap: var(--spacing-s);
-    width: 100%;
-    max-width: 740px;
     padding-inline-start: 0;
+}
+
+.logo-wall.follow .logo-wall-list {
+    justify-content: flex-end;
+    height: 10%;
+    width: auto;
 }
 
 .logo-wall .logo-wall-list-item {
@@ -55,7 +61,7 @@
     max-height: 80px;
 }
 
-@media (min-width: 900px) {
+/* @media (min-width: 900px) {
     .logo-wall {
         padding: var(--spacing-xxl) 0;
     }
@@ -65,9 +71,9 @@
     }
 
     .logo-wall .logo-wall-list {
+        width: 50%;
         column-gap: var(--spacing-xl);
         row-gap: var(--spacing-l);
-        max-width: 1200px;
     }
 
     .logo-wall.technology .logo-wall-list {
@@ -87,4 +93,4 @@
     .logo-wall.meriative-height-adjustment .logo-wall-list-item img {
         max-height: 96px;
     }
-}
+} */

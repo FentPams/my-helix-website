@@ -1,6 +1,8 @@
 import { removeOuterElementLayer, combineChildrenToSingleDiv, addInViewAnimationToMultipleElements } from '../../utils/helpers.js';
 
 const ColorIconPattern = ['pink', 'lightgreen', 'purple', 'yellow', 'purple', 'yellow', 'lightgreen', 'pink'];
+//const ColorCardPattern = ['darkseagreen', 'cornflowerblue'];
+const ColorCardPattern = ['darkseagreen', 'cornflowerblue', 'plum', 'lightcoral', 'lightcoral', 'plum','cornflowerblue', 'darkseagreen'];
 const ColorNumberPattern = ['lightgreen', 'pink', 'purple'];
 const animationConfig = {
   staggerTime: 0.04,
@@ -80,6 +82,38 @@ export default function decorate(block) {
     pictures[1].addEventListener('click', () => {
       pictures[1].classList.add('hidden');
       pictures[0].classList.remove('hidden');
+    });
+  }
+
+  if (block.classList.contains('flip-card')) {
+    block.querySelectorAll('.columns-image').forEach((cell, index) => {
+      const picture = cell.children[0];
+      const heading = cell.children[1];
+      const content = cell.children[2];
+
+      heading.style.color = ColorCardPattern[index];
+
+      const frontDiv = document.createElement('div');
+      frontDiv.classList.add('flip-card-front');
+      frontDiv.style.borderColor = 'LightGrey';
+      //frontDiv.style.color = ColorCardPattern[index];
+      frontDiv.append(heading);
+      frontDiv.append(content);
+
+      const backDiv = document.createElement('div');
+      backDiv.classList.add('flip-card-back');
+      backDiv.append(picture);
+
+      const innerDiv = document.createElement('div');
+      innerDiv.classList.add('flip-card-inner');
+      innerDiv.append(frontDiv);
+      innerDiv.append(backDiv);
+
+      const flipDiv = document.createElement('div');
+      flipDiv.classList.add('flip-card');
+      flipDiv.append(innerDiv);
+
+      cell.append(flipDiv);
     });
   }
 }
