@@ -53,7 +53,6 @@ export default function decorate(block) {
 
   const a = block.querySelector('a');
   if (a) {
-    console.log(a);
     a.href = 'https://main--petplace--hlxsites.hlx.page/traveling-with-a-pet';
   }
 }
