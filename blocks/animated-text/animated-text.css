@@ -2,6 +2,7 @@
  font-size: var(--type-heading-xxxl-size);
  line-height: var(--type-heading-xxxl-lh);
  text-align:center;
+ padding: 12rem 0;
 }
 .in-view.text-main-reveal {
  animation: main-reveal 1s forwards var(--cubic-bezier-1);

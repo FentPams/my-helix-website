@@ -9,3 +9,7 @@
 .presentation-page .form{
  width:60%;
 }
+
+.presentation-page .columns-container .default-content-wrapper img{
+ margin-bottom: 10rem;
+}

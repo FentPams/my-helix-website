@@ -43,6 +43,7 @@
     background-color: #fff;
     border: 2px solid black;
     border-radius: 20px;
+    padding:0 1rem;
 }
 
 /* Style the back side */
@@ -85,6 +86,7 @@
 }
 
 .columns.bleed div.columns-image img {
+    padding-bottom:10rem;
     object-fit: cover;
     height: 100vw;
     width: 100%;
