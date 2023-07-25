@@ -5,13 +5,13 @@ const animationConfig = {
   staggerTime: 0.4,
   items: [
     {
-      selector: '.dialog-title',
+      selector: 'h2',
       animatedClass: 'slide-reveal-up',
     },
     {
-      selectors: '.dialog-list-item',
+      selectors: 'picture',
       animatedClass: 'fade-up',
-      staggerTime: '0.15',
+      staggerTime: '1.0',
     }],
 };
 
@@ -28,7 +28,7 @@ export default function decorate(block) {
 
       if (title) {
         title.setAttribute('class', 'dialog-title');
-        row.replaceWith(title);
+        listItem.append(title);
       } else {
 
         listItem.setAttribute('class', 'dialog-list-item');
@@ -46,14 +46,12 @@ export default function decorate(block) {
           listItem.append(pictureLink);
           console.log(pictureLink);
         } 
-        logoWallLists.push(listItem);
-        row.remove();
       }
+      logoWallLists.push(listItem);
+      listItem.classList.add('inview-animation');
+      addInViewAnimationToMultipleElements(animationConfig.items, listItem, animationConfig.staggerTime);
+      row.remove();
   });
 
   logoWallLists.forEach((list) => block.append(list));
-
-  if (block.classList.contains('inview-animation')) {
-    addInViewAnimationToMultipleElements(animationConfig.items, block, animationConfig.staggerTime);
-  }
 }
