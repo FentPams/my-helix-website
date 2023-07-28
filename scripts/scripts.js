@@ -1,3 +1,4 @@
+import { returnLinkTarget } from '../utils/helpers.js';
 import {
   sampleRUM,
   buildBlock,
@@ -20,6 +21,112 @@ import {
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 let templateModule;
 
+export function addMessageBoxOnGuideTemplate(main) {
+  const messageBox = createTag('div', { class: 'message-box' }, 'Link copied!');
+  main.append(messageBox);
+}
+
+export function addHeadingAnchorLink(elem) {
+  const link = document.createElement('a');
+  link.setAttribute('href', `#${elem.id || ''}`);
+  link.setAttribute('title', `Copy link to "${elem.textContent}" to clipboard`);
+  // hover highlight on title
+  if (elem.tagName === 'H2') {
+    link.classList.add('anchor-link', 'link-highlight-colorful-effect');
+  } else {
+    link.classList.add('anchor-link', 'link-highlight-colorful-effect-2');
+  }
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    navigator.clipboard.writeText(link.href);
+    window.location.href = link.href;
+    const messageBox = document.querySelector('.message-box');
+    if (messageBox) {
+      messageBox.classList.add('active', 'fill');
+      setTimeout(() => {
+        messageBox.classList.remove('active');
+        setTimeout(() => {
+          messageBox.classList.remove('fill');
+        }, 300);
+      }, 1000);
+    }
+
+    e.target.classList.add('anchor-link-copied');
+    setTimeout(() => {
+      e.target.classList.remove('anchor-link-copied');
+    }, 1000);
+  });
+  link.innerHTML = elem.innerHTML;
+  elem.innerHTML = '';
+  elem.append(link);
+}
+
+export function decorateGuideTemplateHeadings(main) {
+  const contentArea = main.querySelector('.section.content');
+  if (!contentArea) return;
+  const contentSections = contentArea.querySelectorAll('.default-content-wrapper');
+  if (!contentSections) return;
+  contentSections.forEach((section) => {
+    section.querySelectorAll('h2, h3, h4, h5, h6').forEach((h) => {
+      addHeadingAnchorLink(h);
+    });
+  });
+}
+
+export function decorateGuideTemplateHero(main) {
+  if (main.classList.contains('without-full-width-hero'));
+  const firstImageInContentArea = main.querySelector('.section.content .default-content-wrapper img');
+  if (firstImageInContentArea) firstImageInContentArea.classList.add('doc-detail-hero-image');
+}
+
+export function decorateGuideTemplateLinks(main) {
+  const links = main.querySelectorAll('.content a');
+  links.forEach((link) => {
+    link.setAttribute('target', returnLinkTarget(link.href));
+  });
+}
+
+export async function decorateGuideTemplateCodeBlock() {
+  if (!document.body.classList.contains('guides-template')) return;
+
+  const highlightCSS = createTag('link', {
+    rel: 'stylesheet',
+    href: '/libs/highlight/atom-one-dark.min.css',
+  });
+  document.head.append(highlightCSS);
+
+  await loadScript('/libs/highlight/highlight.min.js', () => {
+    const initScript = createTag('script', {}, 'hljs.highlightAll();');
+    document.body.append(initScript);
+  });
+}
+
+// patch fix for table not being rendered as block in fragment
+export function decorateFragmentTable(main) {
+  if (!main) return;
+  const tables = main.querySelectorAll('table');
+  if (tables) {
+    tables.forEach((table) => {
+      if (table.classList.contains('block')) return;
+      const tableWrapper = createTag('div', { class: 'table' });
+      table.parentNode.insertBefore(tableWrapper, table);
+      tableWrapper.appendChild(table);
+    });
+  }
+}
+
+export function decorateGuideTemplate(main) {
+  if (!document.body.classList.contains('guides-template') || !main) return;
+  addMessageBoxOnGuideTemplate(main);
+  decorateGuideTemplateHeadings(main);
+  decorateGuideTemplateHero(main);
+  decorateGuideTemplateLinks(main);
+  decorateGuideTemplateCodeBlock();
+  decorateFragmentTable(main);
+}
+
+
+
 /**
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
@@ -39,6 +146,21 @@ function buildHeader() {
   const header = document.querySelector('header');
   header.append(buildBlock('header', ''));
 }
+
+
+function updateGuideTemplateStyleBasedOnHero() {
+  const isHeroContentExist = document.querySelector('.guides-template .section.heading');
+
+  if (isHeroContentExist) {
+    document.querySelector('main').classList.add('has-full-width-hero');
+    const cardListBlocks = document.querySelectorAll('.block.card-list');
+    // make card list in main category page has '.image-card-listing' class
+    cardListBlocks.forEach((block) => block.classList.add('image-card-listing'));
+  } else {
+    document.querySelector('main').classList.add('without-full-width-hero');
+  }
+}
+
 
 /**
  * Builds template block and adds to main as sections.
@@ -152,6 +274,7 @@ export function decorateMain(main) {
   decorateIcons(main);
   buildAutoBlocks(main);
   decorateSections(main);
+  decorateGuideTemplate(main);
   decorateBlocks(main);
 }
 
@@ -196,6 +319,9 @@ export function addFavIcon(href) {
 async function loadLazy(doc) {
   const main = doc.querySelector('main');
   const header = doc.querySelector('header > div');
+  const aside = createTag('aside');
+  main.insertBefore(aside, main.querySelector('.section.content'));
+
   document.body.classList.add('redesign');
   if (templateModule?.loadLazy) {
     templateModule.loadLazy(main);
@@ -215,6 +341,14 @@ async function loadLazy(doc) {
   decorateBlock(header);
   loadBlock(header);
 
+  // sidebar + related style setup
+  const sideNav = buildBlock('side-navigation', '');
+  aside.append(sideNav);
+  //main.insertBefore(aside, main.querySelector('.section.content'));
+  updateGuideTemplateStyleBasedOnHero();
+  decorateBlock(sideNav);
+  loadBlock(sideNav);
+  
   sampleRUM('lazy');
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
