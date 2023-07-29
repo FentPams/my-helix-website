@@ -53,6 +53,6 @@ export default function decorate(block) {
 
   const a = block.querySelector('a');
   if (a && a.href.endsWith('traveling-with-a-pet')) {
-      a.href = 'https://main--petplace--hlxsites.hlx.page/traveling-with-a-pet';
+      a.href = 'https://www.petplace.com/traveling-with-a-pet';
   }
 }
