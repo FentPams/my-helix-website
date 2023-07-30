@@ -116,4 +116,33 @@ export default function decorate(block) {
       cell.append(flipDiv);
     });
   }
+
+  if (block.classList.contains('flip-card2')) {
+    block.querySelectorAll('.columns-image').forEach((cell, index) => {
+      const pictures = cell.querySelectorAll('picture');
+      const picture1 = pictures[0];
+      const picture2 = pictures[1];
+
+      const frontDiv = document.createElement('div');
+      frontDiv.classList.add('flip-card-front');
+      frontDiv.style.borderColor = 'LightGrey';
+      //frontDiv.style.color = ColorCardPattern[index];
+      frontDiv.append(picture1);
+
+      const backDiv = document.createElement('div');
+      backDiv.classList.add('flip-card-back');
+      backDiv.append(picture2);
+
+      const innerDiv = document.createElement('div');
+      innerDiv.classList.add('flip-card-inner');
+      innerDiv.append(frontDiv);
+      innerDiv.append(backDiv);
+
+      const flipDiv = document.createElement('div');
+      flipDiv.classList.add('flip-card');
+      flipDiv.append(innerDiv);
+
+      cell.append(flipDiv);
+    });
+  }
 }
