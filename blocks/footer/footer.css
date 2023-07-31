@@ -1,7 +1,7 @@
 footer {
   padding: 8rem 0;
   margin:10rem 0 0 0;
-  background-color: var(--color-checkerboard-bg-border);
+  background-color: #f1f1f6;
   font-size: var(--body-font-size-s);
 }
 

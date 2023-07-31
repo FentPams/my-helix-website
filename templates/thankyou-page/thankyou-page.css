@@ -1,0 +1,13 @@
+.thankyou-page picture img {
+ height: 500px;
+ width: auto;
+}
+
+.thankyou-page .section.hero-container {
+ padding-bottom: 0;
+}
+
+.thankyou-page .footer-wrapper {
+ margin: 0;
+ padding: 2rem 0rem 3rem 0rem;
+}
