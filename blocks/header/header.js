@@ -521,7 +521,6 @@ export default async function init(blockEl) {
       const gnav = new Gnav(doc.body, blockEl);
       gnav.initHeader();
     } catch (e) {
-      console.log(e);
       const { debug } = await import('../../utils/console.js');
       if (debug) {
         debug('Could not great global navigation', e);

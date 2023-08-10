@@ -44,7 +44,6 @@ export default function decorate(block) {
           }, picture);
   
           listItem.append(pictureLink);
-          console.log(pictureLink);
         } 
       }
       logoWallLists.push(listItem);

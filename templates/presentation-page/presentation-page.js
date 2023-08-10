@@ -1,5 +1,5 @@
 export function loadEager(main){
-console.log('loadEager');
+
 }
 
 
