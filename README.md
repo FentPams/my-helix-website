@@ -1,5 +1,5 @@
-# Your Project's Title...
-Your project's description...
+# Xinyi Adobe Intern Project Demo Website
+This is a website built with Franklin to demo my Franklin Intern Project :)
 
 ## Environments
 - Preview: https://main--my-helix-website--fentpams.hlx.page/
