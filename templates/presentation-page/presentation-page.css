@@ -9,3 +9,30 @@
 .presentation-page .form{
  width:60%;
 }
+
+@media (max-width: 450px){
+ .section.hero-container.dialog-container{
+     padding-bottom:0;
+ }
+ .dialog-list-item.inview-animation.in-view{
+     padding:1rem 0;
+ }
+ .presentation-page .section.pb-0.z-pattern-container{
+     padding-top: 0;
+ } 
+ .section.animated-text-container,
+ .section.dialog-container,
+ .dialog.block.contained{
+     padding-top: 0;
+     padding-bottom: 0;
+ }
+ .section.title-section.columns-container img{
+     padding-top: 0;
+ }
+ .section.title-section.columns-container{
+  padding-bottom:0;
+ }
+ #feat-implement--traveling-with-a-pet-133{
+  padding-top:2rem;
+ }
+}

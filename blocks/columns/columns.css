@@ -5,7 +5,7 @@
 /* The flip card container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect */
 .columns.flip-card .flip-card {
     background-color: transparent;
-    width: 300px;
+    width: min(95%, 300px);
     height: 200px;
     border: 1px solid #f1f1f1;
     perspective: 1000px;
@@ -461,4 +461,10 @@
 
 main.without-full-width-hero .section.content .columns-wrapper {
     margin-top: var(--spacing-m);
+}
+
+@media (max-width: 1000px){
+    .columns.flip-card2 .flip-card {
+        height: 200px;
+    }
 }
