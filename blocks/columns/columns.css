@@ -467,4 +467,9 @@ main.without-full-width-hero .section.content .columns-wrapper {
     .columns.flip-card2 .flip-card {
         height: 200px;
     }
+
+    .columns.flip-card .columns-image{
+        display: flex;
+        justify-content: center;
+    } 
 }
